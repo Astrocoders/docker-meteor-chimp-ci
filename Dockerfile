@@ -37,15 +37,8 @@ RUN apt-get install -y x11vnc
 RUN mkdir ~/.vnc
 RUN x11vnc -storepasswd chimpatee ~/.vnc/passwd
 
-# Copy application to within the Docker image
-COPY ./ /opt/app
-WORKDIR /opt/app
+# Install chimp
+RUN npm install -g chimp
 
-# METEOR
-RUN useradd -mUd ${METEOR_USER_DIR} ${METEOR_USER}
-RUN chown -Rh ${METEOR_USER} /usr/local
-USER ${METEOR_USER}
-RUN curl https://install.meteor.com/ | sh
-
-USER root
-RUN localedef en_US.UTF-8 -i en_US -f UTF-8
+WORKDIR /app
+ENTRYPOINT [ "/usr/local/bin/chimp" ]
